@@ -1,0 +1,25 @@
+
+# iptable
+iptables -F
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -A INPUT -p TCP --dport 3389 -j ACCEPT
+iptables -A INPUT -p TCP --dport 80 -j ACCEPT
+iptables -A INPUT -p TCP --dport 22 -j ACCEPT
+iptables -t nat -A POSTROUTING -j MASQUERADE
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# network
+/sbin/modprobe tun >/dev/null 2>&1
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# squid
+squid -z -F -f /etc/squid/squid.conf >> squid.log
+squid -f /etc/squid/squid.conf >> squid.log
+
+
+# httpd
+httpd
+
+# openvpn
+openvpn --cd /etc/openvpn --config /etc/openvpn/openvpn.conf --script-security 2
+

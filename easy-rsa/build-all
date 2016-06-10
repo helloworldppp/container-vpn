@@ -1,0 +1,8 @@
+#!/bin/sh
+source ./vars
+./clean-all
+
+./pkitool --initca
+./pkitool --server centos
+./pkitool client1
+$OPENSSL dhparam -out ${KEY_DIR}/dh${KEY_SIZE}.pem ${KEY_SIZE}
