@@ -5,10 +5,8 @@
 容器型的主机速度更快,资源利用率更高,管理也更方便.容器型主机通常不提供公网的IP地址,这样就会节约很多成本,本教程将讲述如何在容器型主机上搭建vpn服务.
 vpn可以用来搭建属于用户的虚拟私有网络,在办公,游戏加速等领域有广泛的运用场景. 本文主要以ghostcloud.cn(精灵云)为案例进行讲解.
 
-## 一键安装脚本
-wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/master/install ; sh install
 
-## 安装步骤
+## 安装步骤详解
 
 本教程主要包含几个部分: 安装并配置openvpn, 安装并配置squid, 启动脚本配置.
 
@@ -44,54 +42,20 @@ d. 80 - 容器的web服务器端口, 用于搭建文件服务器
 ![端口详情](img/ports-detail.png)
 注意: 我们后续都只使用后面的外部端口.
 
+### 正式安装
 我们可以直接在网页中进入控制台模式:
 ![网页终端](img/web-terminal.png)
 
-也可以通过putty登陆, putty下载地址: https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
+#### 一键安装脚本
+可以直接在网页终端执行该命令进行安装
+```
+wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/master/install ; sh install
+```
+注意: 由于代码是在国外,失败的话重复执行
+
+如果你喜欢xshell或者putty, 也可以通过putty登陆, putty下载地址: https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
 ![通过putty登陆](img/putty-ssh.png)
-
-
-### 6 更换yum源
-CentOS 7 系统默认的源很慢,更改为阿里源
-```
-cd /etc/yum.repos.d
-mv CentOS-Base.repo CentOS-Base.repo.bak
-wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
-yum makecache
-```
-
-### 7 安装openvpn和squid
-整个过程持续1分钟左右:
-```
-yum install -y wget squid openssl openssl-devel lzo lzo-devel pam pam-devel automake pkgconfig openvpn git httpd
-```
-
-### 8 生成证书
-进入container-vpn/easy-rsa, 执行build-all
-
-### 9 系统配置
-```
-rm -rf /etc/openvpn/openvpn.conf
-rm -rf /etc/squid/squid.conf
-cp /container-vpn/conf/openvpn.conf /etc/openvpn/
-cp /container-vpn/conf/squid.conf /etc/squid/
-```
-
-### 10 生成ovpn模板
-将ovpn文件直接放在内部http服务器里面
-```
-cd /container-vpn/
-rm -rf /var/www/html/*
-mkdir /var/www/html/file
-./genovpn.py
-```
-
-### 11 配置entrypoint.sh
-entrypoint.sh是容器启动执行的命令,需要将启动脚本最后的"exec $@" 替换为 "sh /container-vpn/start"
-```
-sh /etc/openvpn/start
-```
-这条指令可以让主机重启后执行启动脚本, 可以解决主机因内存不足崩溃后不能再服务的问题.
+然后执行一键安装脚本.
 
 ## ovpn文件处理
 
@@ -118,4 +82,50 @@ ovpn模板里面端口需要修改:
 
 进入/etc/squid 修改 squid.conf
 
-然后运行 sh /container-vpn/start, 或重启主机
+然后重启主机.
+
+
+## 手动安装步骤
+这部分给需要了解详细步骤的用户学习:
+
+### 1 更换yum源
+CentOS 7 系统默认的源很慢,更改为阿里源
+```
+cd /etc/yum.repos.d
+mv CentOS-Base.repo CentOS-Base.repo.bak
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+yum makecache
+```
+
+### 2 安装openvpn和squid
+整个过程持续1分钟左右:
+```
+yum install -y wget squid openssl openssl-devel lzo lzo-devel pam pam-devel automake pkgconfig openvpn git httpd
+```
+
+### 3 生成证书
+进入container-vpn/easy-rsa, 执行build-all
+
+### 4 系统配置
+```
+rm -rf /etc/openvpn/openvpn.conf
+rm -rf /etc/squid/squid.conf
+cp /container-vpn/conf/openvpn.conf /etc/openvpn/
+cp /container-vpn/conf/squid.conf /etc/squid/
+```
+
+### 5 生成ovpn模板
+将ovpn文件直接放在内部http服务器里面
+```
+cd /container-vpn/
+rm -rf /var/www/html/*
+mkdir /var/www/html/file
+./genovpn.py
+```
+
+### 6 配置entrypoint.sh
+entrypoint.sh是容器启动执行的命令,需要将启动脚本最后的"exec $@" 替换为 "sh /container-vpn/start"
+```
+sh /etc/openvpn/start
+```
+这条指令可以让主机重启后执行启动脚本, 可以解决主机因内存不足崩溃后不能再服务的问题.
