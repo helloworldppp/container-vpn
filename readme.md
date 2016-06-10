@@ -60,9 +60,8 @@ wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/ma
 ## ovpn文件处理
 
 ### 1 下载并修改ovpn文件
-下载地址是之前我们说的httpd地址: http://外网ip:80端口的外部端口, 可以通过浏览器右键另存为. 在本例中, 我们使用 http://222.211.65.67:38558/file
+下载地址是之前我们说的httpd地址: http://外网ip:80端口的外部端口, 可以通过浏览器右键另存为. 在本例中, 我们使用 http://222.211.65.67:38558/file/<随机码>
 ![访问文件服务器](img/fileserver.png)
-注意,下载完毕后, 马上删除, 避免被人盗用.在命令行里面执行:
 ```
 rm -rf /var/www/html/*
 ```
