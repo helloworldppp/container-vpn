@@ -47,10 +47,8 @@ mkdir /var/www/html/file
 if [ ! -f /container-vpn/entrypoint.sh ]; then
 	cp /entrypoint.sh /container-vpn/
 fi
-sed 's#exec $@#sh /container-vpn/start#' /entrypoint.sh > /entrypoint.sh
+sed 's#exec $@#/container-vpn/start#' /container-vpn/entrypoint.sh > /entrypoint.sh
 
 # 启动服务
-sh /container-vpn/start &
-
-# 重启容器
-echo "Restart container and download."
+echo "Service started.."
+/container-vpn/start
