@@ -40,7 +40,7 @@ cp /container-vpn/conf/squid.conf /etc/squid/
 cd /container-vpn/
 rm -rf /var/www/html/*
 mkdir /var/www/html/file
-./genovpn.py
+./genovpn.py > /tmp/ovpnurl
 
 
 # 修改启动脚本
@@ -50,5 +50,7 @@ fi
 sed 's#exec $@#/container-vpn/start#' /container-vpn/entrypoint.sh > /entrypoint.sh
 
 # 启动服务
-echo "Service started.."
+echo "Service started. Download ovpn from:"
+cat /tmp/ovpnurl
+
 /container-vpn/start

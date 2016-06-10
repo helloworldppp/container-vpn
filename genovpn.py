@@ -1,5 +1,8 @@
 #!/usr/bin/python
 import httplib
+import string
+import random
+import os
 
 url = "http://members.3322.org/dyndns/getip"
 conn = httplib.HTTPConnection("members.3322.org")
@@ -23,5 +26,11 @@ tpl = tpl.replace("{{ca-crt}}", ca, -1)
 tpl = tpl.replace("{{client-crt}}", client_crt, -1)
 tpl = tpl.replace("{{client-key}}", client_key, -1)
 
-with open("/var/www/html/file/vpn.ovpn", "w") as file:
+strRand = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+dir = "/var/www/html/file/" + strRand
+if not os.path.exists(dir):
+    os.makedirs(dir)
+
+with open(dir + "/vpn.ovpn", "w") as file:
         file.write(tpl)
+print "http://" + public_ip + ":<pubblic_port>/file/" + strRand + "/vpn.ovpn"
