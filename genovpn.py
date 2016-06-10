@@ -33,4 +33,4 @@ if not os.path.exists(dir):
 
 with open(dir + "/vpn.ovpn", "w") as file:
         file.write(tpl)
-print "http://" + public_ip + ":<pubblic_port>/file/" + strRand + "/vpn.ovpn"
+print "http://" + public_ip + ":<pubblic_port>/file/" + strRand
