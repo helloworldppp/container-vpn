@@ -72,7 +72,7 @@ wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/ma
 ## ovpn文件处理
 
 ### 1 下载并修改ovpn文件
-安装成功后, 界面有一行是瞎子地址:
+安装成功后, 界面有一行是下载地址 (下图是我后续的截图,所以地址有点不一样, 具体参考你的实际地址):
 ![下载地址](img/download.png)
 "http://222.211.65.67:<public_port>/H0MLY" 中的<public_port>需要替换为80端口对应的外部端口
 ![访问文件服务器](img/fileserver.png)
