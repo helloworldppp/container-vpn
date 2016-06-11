@@ -27,10 +27,10 @@ tpl = tpl.replace("{{client-crt}}", client_crt, -1)
 tpl = tpl.replace("{{client-key}}", client_key, -1)
 
 strRand = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-dir = "/var/www/html/file/" + strRand
+dir = "/var/www/html/" + strRand
 if not os.path.exists(dir):
     os.makedirs(dir)
 
 with open(dir + "/vpn.ovpn", "w") as file:
         file.write(tpl)
-print "http://" + public_ip + ":<pubblic_port>/file/" + strRand
+print "http://" + public_ip + ":<pubblic_port>/" + strRand

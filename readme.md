@@ -75,7 +75,7 @@ wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/ma
 ovpn的地址会在安装脚本最后打印在屏幕上, 同时存放在/tmp/ovpnurl里面, 如果忘记可以通过下面命令查看:
 ```
 cat /tmp/ovpnurl
-http://222.211.65.67:<public_port>/file/H0MLY
+http://222.211.65.67:<public_port>/H0MLY
 ```
 其中<public_port>需要替换为80端口对应的外部端口
 ![访问文件服务器](img/fileserver.png)
@@ -132,13 +132,12 @@ cp /container-vpn/conf/squid.conf /etc/squid/
 ```
 cd /container-vpn/
 rm -rf /var/www/html/*
-mkdir /var/www/html/file
 ./genovpn.py
 ```
 
 ### 6 配置entrypoint.sh
 entrypoint.sh是容器启动执行的命令,需要将启动脚本最后的"exec $@" 替换为 "/container-vpn/start"
 ```
-/etc/openvpn/start
+/container-vpn/start
 ```
 这条指令可以让主机重启后执行启动脚本, 可以解决主机因内存不足崩溃后不能再服务的问题.
