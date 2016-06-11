@@ -72,13 +72,19 @@ wget -O install https://raw.githubusercontent.com/helloworldppp/container-vpn/ma
 ## ovpn文件处理
 
 ### 1 下载并修改ovpn文件
-ovpn的地址会在安装脚本最后打印在屏幕上, 同时存放在/tmp/ovpnurl里面, 如果忘记可以通过下面命令查看:
+安装成功后, 界面有一行是瞎子地址:
+![下载地址](img/download.png)
+"http://222.211.65.67:<public_port>/H0MLY" 中的<public_port>需要替换为80端口对应的外部端口
+![访问文件服务器](img/fileserver.png)
+在这里替换为"http://222.211.65.67:38558/H0MLY"
+![下载地址](img/ovpn-link.png)
+
+
+如果忘记了,可以ssh到主机然后执行:
 ```
 cat /tmp/ovpnurl
 http://222.211.65.67:<public_port>/H0MLY
 ```
-其中<public_port>需要替换为80端口对应的外部端口
-![访问文件服务器](img/fileserver.png)
 
 ### 2 修改文件
 ovpn模板里面端口需要修改:
